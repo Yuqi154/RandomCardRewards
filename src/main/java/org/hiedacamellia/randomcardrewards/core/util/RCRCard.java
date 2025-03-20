@@ -4,10 +4,11 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 
 public record RCRCard(ResourceLocation id,String nameKey,String descriptionKey,ResourceLocation texture,CardContent content) {
 
-    public static final RCRCard EMPTY = new RCRCard(new ResourceLocation("empty"), "empty", "empty", new ResourceLocation("empty"), CardContent.EMPTY);
+    public static final RCRCard EMPTY = new RCRCard(RandomCardRewards.rl("empty"), "empty", "empty", RandomCardRewards.rl("empty"), CardContent.EMPTY);
 
     public Component getName(){
         return Component.translatable(nameKey);
@@ -26,7 +27,12 @@ public record RCRCard(ResourceLocation id,String nameKey,String descriptionKey,R
     }
 
     public static RCRCard decode(FriendlyByteBuf buffer) {
-        return new RCRCard(buffer.readResourceLocation(), buffer.readUtf(), buffer.readUtf(), buffer.readResourceLocation(), CardContent.decode(buffer));
+        ResourceLocation id = buffer.readResourceLocation();
+        String nameKey = buffer.readUtf();
+        String descriptionKey = buffer.readUtf();
+        ResourceLocation texture = buffer.readResourceLocation();
+        CardContent content = CardContent.decode(buffer);
+        return new RCRCard(id, nameKey, descriptionKey, texture, content);
     }
 
     public static RCRCard fromJson(JsonObject object){

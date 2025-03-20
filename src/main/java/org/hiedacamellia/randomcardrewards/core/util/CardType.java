@@ -28,14 +28,6 @@ public enum CardType {
         return null;
     }
 
-    public static CardType decode(FriendlyByteBuf byteBuf) {
-        return fromString(byteBuf.readUtf());
-    }
-
-    public static void encode(CardType cardType, FriendlyByteBuf byteBuf) {
-        byteBuf.writeUtf(cardType.getType());
-    }
-
     public static CardType fromJson(JsonObject json){
         return fromString(json.get("type").getAsString());
     }

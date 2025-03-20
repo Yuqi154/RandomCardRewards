@@ -1,6 +1,7 @@
 package org.hiedacamellia.randomcardrewards.core.command;
 
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,11 +15,18 @@ public class RCRCommand {
     @SubscribeEvent
     public static void registerCommand(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal(RandomCardRewards.MODID)
-                .then(Commands.literal("open_card_menu").executes(context -> {
-                    ServerPlayer player = context.getSource().getPlayerOrException();
-                    NetworkHooks.openScreen(player, new RCRCardMenuProvider(),player.getOnPos());
-                    return 0;
-                }))
+                .then(Commands.literal("open_card_menu")
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(context -> {
+                                    ServerPlayer serverPlayer = EntityArgument.getPlayer(context, "player");
+                                    NetworkHooks.openScreen(serverPlayer, RCRCardMenuProvider.INSTANCE);
+                                    return 0;
+                                })
+                        ).executes(context -> {
+                            ServerPlayer serverPlayer = context.getSource().getPlayerOrException();
+                            NetworkHooks.openScreen(serverPlayer, RCRCardMenuProvider.INSTANCE);
+                            return 0;
+                        }))
 
 
         );

@@ -11,6 +11,7 @@ import org.hiedacamellia.randomcardrewards.client.gui.widget.RewardCardWidget;
 import org.hiedacamellia.randomcardrewards.common.menu.RCRCardMenu;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
@@ -24,6 +25,7 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
 
     public RCRCardScreen(RCRCardMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        RandomCardRewards.LOGGER.debug("Screen Created");
         this.cards = menu.cards;
         this.imageWidth = 172;
         this.imageHeight = 208;
@@ -34,17 +36,19 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
         super.init();
         int startX = leftPos+22;
         int startY = topPos+32;
-        for (int i = 0; i < 4; i++) {
-            RewardCardWidget widget = new RewardCardWidget(startX, startY);
-            this.addRenderableWidget(widget);
+        cardWidgets=new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            cardWidgets.add(new RewardCardWidget(startX, startY));
             startY += 48;
         }
         reset();
         cardWidgets.forEach(this::addRenderableWidget);
+        RandomCardRewards.LOGGER.debug("Screen Initialized");
     }
 
     public void reset(){
         for (int i = startIndex; i < cards.size(); i++) {
+            if(i-startIndex>=cardWidgets.size()) break;
             cardWidgets.get(i - startIndex).setCard(cards.get(i));
         }
     }

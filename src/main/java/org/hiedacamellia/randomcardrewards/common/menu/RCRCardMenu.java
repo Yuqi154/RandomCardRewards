@@ -20,8 +20,21 @@ public class RCRCardMenu extends AbstractContainerMenu {
     public final Level level;
     public final List<RCRCard> cards;
 
-    public RCRCardMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, new ArrayList<>());
+    private static  List<RCRCard> fromNetwork(FriendlyByteBuf buf) {
+        if(buf==null) return new ArrayList<>();
+        List<RCRCard> cards = new ArrayList<>();
+        try {
+            for (int i = 0; i < 3 && buf.isReadable(); i++) {
+                cards.add(RCRCard.decode(buf));
+            }
+        }catch (Exception e){
+            RandomCardRewards.LOGGER.error("Error decoding card from network",e);
+        }
+        return cards;
+    }
+
+    public RCRCardMenu(int id, Inventory inv, FriendlyByteBuf buf) {
+        this(id, inv, fromNetwork(buf));
     }
 
     public RCRCardMenu(int id, Inventory inv, List<RCRCard> cards) {
@@ -29,7 +42,6 @@ public class RCRCardMenu extends AbstractContainerMenu {
         this.player = inv.player;
         this.level = inv.player.level();
         this.cards = cards;
-        RandomCardRewards.LOGGER.info("Card Menu Created");
     }
 
     @Override

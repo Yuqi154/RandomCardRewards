@@ -12,14 +12,14 @@ public record CardContent(CardType type, String content) {
     }
 
     public static void encode(CardContent cardContent, FriendlyByteBuf buffer) {
-        CardType.encode(cardContent.type, buffer);
+        buffer.writeEnum(cardContent.type);
         buffer.writeUtf(cardContent.content);
     }
 
     public static CardContent decode(FriendlyByteBuf buffer) {
-        CardType type = CardType.decode(buffer);
+        CardType cardType = buffer.readEnum(CardType.class);
         String content = buffer.readUtf();
-        return CardContent.of(type, content);
+        return CardContent.of(cardType, content);
     }
 
     public static CardContent fromJson(JsonObject json){
