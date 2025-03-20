@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.hiedacamellia.roguegui.mixin",
+  "package": "org.hiedacamellia.randomcardrewards.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "roguegui.refmap.json",
   "mixins": [
