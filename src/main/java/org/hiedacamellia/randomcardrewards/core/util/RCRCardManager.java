@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+
 public class RCRCardManager {
 
     private static final RandomSource randomSource = RandomSource.create();
@@ -32,7 +32,7 @@ public class RCRCardManager {
     }
 
     public static RCRCard getRandomCard(){
-        return cards.get(randomSource.nextInt(cards.size()));
+        return cards.get(randomSource.nextInt());
     }
 
     public static List<RCRCard> getRandomCards(int n){
@@ -48,16 +48,19 @@ public class RCRCardManager {
             }
             return empty;
         }
-        Set<RCRCard> cardSet = new HashSet<>();
-        while(cardSet.size()<n){
-            cardSet.add(getRandomCard());
+        ArrayList<RCRCard> cardSet = new ArrayList<>();
+
+        ArrayList<RCRCard> rcrCards = new ArrayList<>(cards);
+        for(int i=0;i<n;i++){
+            RCRCard card = rcrCards.get(randomSource.nextInt(rcrCards.size()));
+            cardSet.add(card);
+            rcrCards.remove(card);
         }
         return new ArrayList<>(cardSet);
     }
 
 
-    @SubscribeEvent
-    public void onSetup(FMLCommonSetupEvent event) {
+    public static void onSetup(FMLCommonSetupEvent event) {
         RandomCardRewards.LOGGER.info("Setting up RCRCardManager");
         addCard(RCRCard.EMPTY);
         addCard(RCRCard.EMPTY);

@@ -18,8 +18,12 @@ public class RCRCommand {
                 .then(Commands.literal("open_card_menu")
                         .then(Commands.argument("player", EntityArgument.player())
                                 .executes(context -> {
-                                    ServerPlayer serverPlayer = EntityArgument.getPlayer(context, "player");
-                                    NetworkHooks.openScreen(serverPlayer, RCRCardMenuProvider.INSTANCE);
+                                    try {
+                                        ServerPlayer serverPlayer = EntityArgument.getPlayer(context, "player");
+                                        NetworkHooks.openScreen(serverPlayer, new RCRCardMenuProvider(3));
+                                    } catch (Exception e) {
+                                        RandomCardRewards.LOGGER.error("Error opening card menu", e);
+                                    }
                                     return 0;
                                 })
                         ).executes(context -> {

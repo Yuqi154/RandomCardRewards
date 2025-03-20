@@ -36,11 +36,17 @@ public class RCRCardMenuProvider implements MenuProvider {
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-        cards.forEach(
-                card -> {
-                    RCRCard.encode(card, buf);
-                }
-        );
+        if(cards!=null) {
+            cards.forEach(
+                    card -> {
+                        RCRCard.encode(card, buf);
+                    }
+            );
+        }else {
+            for (int i1 = 0; i1 < RCRCardManager.getRandomCards(3).size(); i1++) {
+                RCRCard.encode(RCRCardManager.getRandomCards(3).get(i1), buf);
+            }
+        }
         return new RCRCardMenu(i,inventory, buf);
     }
 }
