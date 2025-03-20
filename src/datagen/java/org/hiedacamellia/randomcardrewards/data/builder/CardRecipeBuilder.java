@@ -1,4 +1,4 @@
-package org.hiedacamellia.randomcardrewards.data;
+package org.hiedacamellia.randomcardrewards.data.builder;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -10,7 +10,6 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.hiedacamellia.randomcardrewards.core.recipe.CardRecipe;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 

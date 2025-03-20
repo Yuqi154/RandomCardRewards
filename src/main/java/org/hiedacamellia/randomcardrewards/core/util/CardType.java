@@ -7,6 +7,7 @@ public enum CardType {
     ITEM("item"),
     COMMAND("command"),
     EFFECT("effect"),
+    NONE("none")
     ;
 
     private final String type;

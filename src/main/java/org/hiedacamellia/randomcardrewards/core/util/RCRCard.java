@@ -6,6 +6,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public record RCRCard(ResourceLocation id,String nameKey,String descriptionKey,ResourceLocation texture,CardContent content) {
 
+    public static final RCRCard EMPTY = new RCRCard(new ResourceLocation("empty"), "empty", "empty", new ResourceLocation("empty"), CardContent.EMPTY);
+
     public static void encode(RCRCard card, FriendlyByteBuf buffer) {
         buffer.writeResourceLocation(card.id);
         buffer.writeUtf(card.nameKey);

@@ -5,6 +5,8 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public record CardContent(CardType type, String content) {
 
+    public static final CardContent EMPTY = new CardContent(CardType.NONE, "");
+
     public static CardContent of(CardType type, String content) {
         return new CardContent(type, content);
     }
