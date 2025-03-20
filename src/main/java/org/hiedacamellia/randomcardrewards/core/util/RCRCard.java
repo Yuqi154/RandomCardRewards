@@ -2,11 +2,20 @@ package org.hiedacamellia.randomcardrewards.core.util;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public record RCRCard(ResourceLocation id,String nameKey,String descriptionKey,ResourceLocation texture,CardContent content) {
 
     public static final RCRCard EMPTY = new RCRCard(new ResourceLocation("empty"), "empty", "empty", new ResourceLocation("empty"), CardContent.EMPTY);
+
+    public Component getName(){
+        return Component.translatable(nameKey);
+    }
+
+    public Component getDescription(){
+        return Component.translatable(descriptionKey);
+    }
 
     public static void encode(RCRCard card, FriendlyByteBuf buffer) {
         buffer.writeResourceLocation(card.id);

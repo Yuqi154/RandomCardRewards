@@ -5,6 +5,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import org.hiedacamellia.randomcardrewards.core.util.RCRCardManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -20,6 +21,6 @@ public class RCRCardMenuProvider implements MenuProvider {
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new RCRCardMenu(i,inventory,new ArrayList<>());
+        return new RCRCardMenu(i,inventory, RCRCardManager.getRandomCards(4));
     }
 }
