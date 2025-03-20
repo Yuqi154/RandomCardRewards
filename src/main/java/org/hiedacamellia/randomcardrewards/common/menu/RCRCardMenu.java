@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 import org.hiedacamellia.randomcardrewards.registries.RCRMenu;
 
@@ -28,11 +29,12 @@ public class RCRCardMenu extends AbstractContainerMenu {
         this.player = inv.player;
         this.level = inv.player.level();
         this.cards = cards;
+        RandomCardRewards.LOGGER.info("Card Menu Created");
     }
 
     @Override
     public ItemStack quickMoveStack(Player p_38941_, int p_38942_) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

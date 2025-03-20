@@ -16,7 +16,7 @@ public class RCRCommand {
         event.getDispatcher().register(Commands.literal(RandomCardRewards.MODID)
                 .then(Commands.literal("open_card_menu").executes(context -> {
                     ServerPlayer player = context.getSource().getPlayerOrException();
-                    NetworkHooks.openScreen(player, RCRCardMenuProvider.INSTANCE);
+                    NetworkHooks.openScreen(player, new RCRCardMenuProvider(),player.getOnPos());
                     return 0;
                 }))
 
