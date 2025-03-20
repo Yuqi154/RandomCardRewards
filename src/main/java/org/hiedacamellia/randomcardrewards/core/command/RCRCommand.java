@@ -17,7 +17,7 @@ public class RCRCommand {
                 .then(Commands.literal("open_card_menu").executes(context -> {
                     ServerPlayer player = context.getSource().getPlayerOrException();
                     NetworkHooks.openScreen(player, RCRCardMenuProvider.INSTANCE);
-                    return 1;
+                    return 0;
                 }))
 
 

@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.hiedacamellia.randomcardrewards.core.config.RCRCommonConfig;
+import org.hiedacamellia.randomcardrewards.registries.RCRMenu;
 import org.hiedacamellia.randomcardrewards.registries.RCRRecipeType;
 import org.slf4j.Logger;
 
@@ -25,6 +26,7 @@ public class RandomCardRewards {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         RCRRecipeType.RECIPE_TYPES.register(modEventBus);
         RCRRecipeType.SERIALIZERS.register(modEventBus);
+        RCRMenu.MENU_TYPES.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, RCRCommonConfig.SPEC);
     }

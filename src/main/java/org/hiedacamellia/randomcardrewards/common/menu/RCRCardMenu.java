@@ -37,6 +37,6 @@ public class RCRCardMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player p_38874_) {
-        return false;
+        return true;
     }
 }
