@@ -2,13 +2,14 @@ package org.hiedacamellia.randomcardrewards;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.hiedacamellia.randomcardrewards.core.config.RCRCommonConfig;
-import org.hiedacamellia.randomcardrewards.core.util.RCRCardManager;
+import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
 import org.hiedacamellia.randomcardrewards.registries.RCRMenu;
 import org.hiedacamellia.randomcardrewards.registries.RCRRecipeType;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class RandomCardRewards {
         RCRRecipeType.SERIALIZERS.register(modEventBus);
         RCRMenu.MENU_TYPES.register(modEventBus);
 
-        modEventBus.addListener(RCRCardManager::onSetup);
+        MinecraftForge.EVENT_BUS.addListener(CardPoolManager::onAddResourceReloadListener);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, RCRCommonConfig.SPEC);
     }

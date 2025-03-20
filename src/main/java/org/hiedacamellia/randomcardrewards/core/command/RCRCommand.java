@@ -20,7 +20,7 @@ public class RCRCommand {
                                 .executes(context -> {
                                     try {
                                         ServerPlayer serverPlayer = EntityArgument.getPlayer(context, "player");
-                                        NetworkHooks.openScreen(serverPlayer, new RCRCardMenuProvider(3));
+                                        NetworkHooks.openScreen(serverPlayer, RCRCardMenuProvider.INSTANCE);
                                     } catch (Exception e) {
                                         RandomCardRewards.LOGGER.error("Error opening card menu", e);
                                     }

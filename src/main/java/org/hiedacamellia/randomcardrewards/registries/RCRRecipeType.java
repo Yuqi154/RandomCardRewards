@@ -5,6 +5,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
+import org.hiedacamellia.randomcardrewards.core.recipe.CardPoolRecipe;
 import org.hiedacamellia.randomcardrewards.core.recipe.CardRecipe;
 
 public class RCRRecipeType {
@@ -15,6 +16,8 @@ public class RCRRecipeType {
 
 	static {
 		CardRecipe.TYPE = RECIPE_TYPES.register("card", () -> RecipeType.simple(RandomCardRewards.rl("card")));
-		CardRecipe.SERIALIZER = SERIALIZERS.register("boiling_pot_type", () -> CardRecipe.Serializer.INSTANCE);
+		CardPoolRecipe.TYPE = RECIPE_TYPES.register("card_pool", () -> RecipeType.simple(RandomCardRewards.rl("card_pool")));
+		CardRecipe.SERIALIZER = SERIALIZERS.register("card", () -> CardRecipe.Serializer.INSTANCE);
+		CardPoolRecipe.SERIALIZER = SERIALIZERS.register("card_pool", () -> CardPoolRecipe.Serializer.INSTANCE);
 	}
 }

@@ -27,6 +27,9 @@ public class RCRCardMenu extends AbstractContainerMenu {
             for (int i = 0; i < 3 && buf.isReadable(); i++) {
                 cards.add(RCRCard.decode(buf));
             }
+            while(cards.size()<3){
+                cards.add(RCRCard.EMPTY);
+            }
         }catch (Exception e){
             RandomCardRewards.LOGGER.error("Error decoding card from network",e);
         }

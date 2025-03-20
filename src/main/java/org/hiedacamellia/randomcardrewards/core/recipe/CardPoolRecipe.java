@@ -19,6 +19,7 @@
 
 package org.hiedacamellia.randomcardrewards.core.recipe;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -35,48 +36,61 @@ import net.minecraftforge.registries.RegistryObject;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 import org.jetbrains.annotations.Nullable;
 
-public class CardRecipe implements Recipe<Inventory> {
+import java.util.ArrayList;
+import java.util.List;
 
-    private final RCRCard card;
+public class CardPoolRecipe implements Recipe<Inventory> {
+
     private final ResourceLocation id;
+    private final List<ResourceLocation> pool;
 
-    public CardRecipe(ResourceLocation id, RCRCard card) {
+    public CardPoolRecipe(ResourceLocation id, List<ResourceLocation> pool) {
         this.id = id;
-        this.card = card;
+        this.pool = pool;
     }
 
-    public static RegistryObject<RecipeSerializer<CardRecipe>> SERIALIZER;
-    public static RegistryObject<RecipeType<CardRecipe>> TYPE;
+    public static RegistryObject<RecipeSerializer<CardPoolRecipe>> SERIALIZER;
+    public static RegistryObject<RecipeType<CardPoolRecipe>> TYPE;
 
-    public static class Serializer implements RecipeSerializer<CardRecipe> {
+    public static class Serializer implements RecipeSerializer<CardPoolRecipe> {
 
         public static final Serializer INSTANCE = new Serializer();
 
         @Override
-        public CardRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+        public CardPoolRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json, "id"));
-            RCRCard rcrCard = RCRCard.fromJson(json);
-            return new CardRecipe(id, rcrCard);
+            JsonArray pool1 = json.get("pool").getAsJsonArray();
+            List<ResourceLocation> rcrCard = new ArrayList<>();
+            for (int i = 0; i < pool1.asList().size(); i++) {
+                rcrCard.add(new ResourceLocation(pool1.get(i).getAsString()));
+            }
+            return new CardPoolRecipe(id, rcrCard);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, CardRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, CardPoolRecipe recipe) {
             buffer.writeResourceLocation(recipe.id);
-            RCRCard.encode(recipe.card, buffer);
+            buffer.writeVarInt(recipe.pool.size());
+            recipe.pool.forEach(buffer::writeResourceLocation);
         }
 
         @Nullable
         @Override
-        public CardRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf byteBuf) {
+        public CardPoolRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf byteBuf) {
             ResourceLocation id = byteBuf.readResourceLocation();
-            RCRCard card = RCRCard.decode(byteBuf);
-            return new CardRecipe(id, card);
+            int size = byteBuf.readVarInt();
+            List<ResourceLocation> pool = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                pool.add(byteBuf.readResourceLocation());
+            }
+            return new CardPoolRecipe(id, pool);
         }
 
     }
 
-    public RCRCard getCard() {
-        return card;
+
+    public List<ResourceLocation> getPool() {
+        return pool;
     }
 
     @Override
@@ -114,9 +128,9 @@ public class CardRecipe implements Recipe<Inventory> {
         return TYPE.get();
     }
 
-    public static CardRecipe getRecipe(RecipeManager recipeManager, ResourceLocation id) {
+    public static CardPoolRecipe getRecipe(RecipeManager recipeManager, ResourceLocation id) {
         if (recipeManager != null) {
-	        for (CardRecipe recipe : recipeManager.getAllRecipesFor(TYPE.get())) {
+	        for (CardPoolRecipe recipe : recipeManager.getAllRecipesFor(TYPE.get())) {
 	            if (recipe.getId().equals(id)) {
 	                return recipe;
 	            }
