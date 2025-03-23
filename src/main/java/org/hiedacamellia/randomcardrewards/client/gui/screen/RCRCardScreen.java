@@ -39,8 +39,8 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
     public RCRCardScreen(RCRCardMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
         this.cards = new ArrayList<>();
-        this.imageWidth = 172;
-        this.imageHeight = 244;
+        this.imageWidth = 164;
+        this.imageHeight = 210;
         this.data = menu.data;
         this.cardPool = CardPoolManager.getCardPool(data.get(0));
         this.cards = cardPool.cards();
@@ -67,19 +67,19 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
         reset();
         cardWidgets.forEach(this::addRenderableWidget);
 
-        left = new RCRButton(leftPos+22, topPos+32, 20, 20, Component.literal("<"), (button)->{
+        left = new RCRButton(leftPos+12, topPos+212, 20, 20, Component.literal("<"), (button)->{
             if(startIndex>0){
                 startIndex--;
                 reset();
             }
         });
-        right = new RCRButton(leftPos+22+48*3, topPos+32, 20, 20, Component.literal(">"), (button)->{
+        right = new RCRButton(leftPos+172-12-20, topPos+212, 20, 20, Component.literal(">"), (button)->{
             if(startIndex+3<cards.size()){
                 startIndex++;
                 reset();
             }
         });
-        confirm = new RCRButton(leftPos+22, topPos+32+48*3, 20, 20, Component.literal("Confirm"), (button)->{
+        confirm = new RCRButton(leftPos+172/2-50, topPos+212, 100, 20, Component.literal("Confirm"), (button)->{
             if(selected!=-1){
                 int cardIndex = cardPool.getCardIndex(cardWidgets.get(selected).getCard());
                 int poolIndex = CardPoolManager.getCardPoolIndex(cardPool.id());
@@ -106,8 +106,8 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
     }
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float p_97788_, int p_97789_, int p_97790_) {
-        guiGraphics.blit(BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth,
-                this.imageHeight);
+        guiGraphics.blit(BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, 180, this.imageWidth,
+                180);
     }
 
     @Override
