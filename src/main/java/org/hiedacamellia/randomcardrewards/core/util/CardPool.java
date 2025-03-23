@@ -1,12 +1,15 @@
 package org.hiedacamellia.randomcardrewards.core.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record CardPool(List<RCRCard> cards) {
+public record CardPool(List<RCRCard> cards, ResourceLocation id) {
+
+    public static final CardPool EMPTY = new CardPool(new ArrayList<>(), RandomCardRewards.rl("empty"));
 
     private static final RandomSource randomSource = RandomSource.create();
 

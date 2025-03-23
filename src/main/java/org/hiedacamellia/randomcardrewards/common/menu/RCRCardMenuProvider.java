@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
+import org.hiedacamellia.randomcardrewards.core.util.CardPool;
 import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 import org.jetbrains.annotations.Nullable;
@@ -17,15 +18,15 @@ import java.util.List;
 
 public class RCRCardMenuProvider implements MenuProvider {
 
-    private final List<RCRCard> cards;
+    private final ResourceLocation resourceLocation;
 
     public static final RCRCardMenuProvider INSTANCE = new RCRCardMenuProvider(RandomCardRewards.rl("test_pool"));
 
     public RCRCardMenuProvider(ResourceLocation pool){
-        this.cards = CardPoolManager.getCardPool(pool).cards();
+        this.resourceLocation = pool;
     }
-    public RCRCardMenuProvider(List<RCRCard> cards){
-        this.cards = cards;
+    public RCRCardMenuProvider(CardPool cardPool){
+        this.resourceLocation = cardPool.id();
     }
 
     @Override
@@ -36,16 +37,7 @@ public class RCRCardMenuProvider implements MenuProvider {
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-        if(cards!=null) {
-            for (int i1 = 0; i1 < cards.size(); i1++) {
-                RandomCardRewards.LOGGER.info("Card "+i1+": "+cards.get(i1).getName());
-            }
-            cards.forEach(
-                    card -> {
-                        RCRCard.encode(card, buf);
-                    }
-            );
-        }
+        buf.writeResourceLocation(resourceLocation);
         return new RCRCardMenu(i,inventory, buf);
     }
 }

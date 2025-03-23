@@ -6,9 +6,12 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerData;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 import org.hiedacamellia.randomcardrewards.client.gui.widget.RewardCardWidget;
 import org.hiedacamellia.randomcardrewards.common.menu.RCRCardMenu;
+import org.hiedacamellia.randomcardrewards.core.util.CardPool;
+import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 
 import java.util.ArrayList;
@@ -18,10 +21,13 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
 
     public List<RewardCardWidget> cardWidgets;
     public List<RCRCard> cards;
+    private CardPool cardPool;
 
     private int startIndex = 0;
 
     private int selected = -1;
+
+    private ContainerData data;
 
     public static final ResourceLocation BACKGROUND = RandomCardRewards.rl("textures/gui/gui.png");
 
@@ -30,6 +36,9 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
         this.cards = new ArrayList<>();
         this.imageWidth = 172;
         this.imageHeight = 208;
+        this.data = menu.data;
+        cardPool = CardPoolManager.getCardPool(data.get(0));
+        this.cards = cardPool.cards();
     }
 
     public void setCards(List<RCRCard> cards){

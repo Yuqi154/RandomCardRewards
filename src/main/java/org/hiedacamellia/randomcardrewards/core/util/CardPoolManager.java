@@ -18,18 +18,35 @@ public class CardPoolManager implements ResourceManagerReloadListener {
 
     private static RecipeManager recipeManager;
     private static final Map<ResourceLocation, CardPool> map = new HashMap<>();
+    private static final Map<ResourceLocation, Integer> idmap = new HashMap<>();
+    private static final Map<Integer, CardPool> indexmap = new HashMap<>();
+
+    public static int cardPoolIndex(ResourceLocation id){
+        return idmap.get(id);
+    }
 
     public static void addCardPool(ResourceLocation id, CardPool pool) {
         map.put(id, pool);
+        idmap.put(id, map.size()-1);
+        indexmap.put(map.size()-1,pool);
     }
 
     public static CardPool getCardPool(ResourceLocation id) {
         if(map.get(id)==null){
             RandomCardRewards.LOGGER.error("Card pool "+id+" not found, returning empty");
-            return new CardPool(new ArrayList<>());
+            return CardPool.EMPTY;
         }
         RandomCardRewards.LOGGER.debug("Card pool "+id+" found");
         return map.get(id);
+    }
+
+    public static CardPool getCardPool(int index) {
+        if(indexmap.get(index)==null){
+            RandomCardRewards.LOGGER.error("Card pool "+index+" not found, returning empty");
+            return CardPool.EMPTY;
+        }
+        RandomCardRewards.LOGGER.debug("Card pool "+index+" found");
+        return indexmap.get(index);
     }
 
     public static void onAddResourceReloadListener(AddReloadListenerEvent event){
@@ -40,6 +57,8 @@ public class CardPoolManager implements ResourceManagerReloadListener {
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
         map.clear();
+        idmap.clear();
+        indexmap.clear();
 
         RandomCardRewards.LOGGER.debug("Loading card pools");
 
@@ -61,7 +80,7 @@ public class CardPoolManager implements ResourceManagerReloadListener {
                     rcrCards.add(cards.get(index).getCard());
                 }
             }
-            addCardPool(id,new CardPool(rcrCards));
+            addCardPool(id,new CardPool(rcrCards,id));
         }
     }
 }
