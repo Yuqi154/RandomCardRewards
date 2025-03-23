@@ -1,15 +1,16 @@
 package org.hiedacamellia.randomcardrewards.client.gui.screen;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
+import org.hiedacamellia.randomcardrewards.client.gui.widget.RCRButton;
 import org.hiedacamellia.randomcardrewards.client.gui.widget.RewardCardWidget;
 import org.hiedacamellia.randomcardrewards.common.menu.RCRCardMenu;
+import org.hiedacamellia.randomcardrewards.core.network.RCRCardInvokeC2SMessage;
 import org.hiedacamellia.randomcardrewards.core.util.CardPool;
 import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
@@ -23,6 +24,10 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
     public List<RCRCard> cards;
     private CardPool cardPool;
 
+    private RCRButton left;
+    private RCRButton right;
+    private RCRButton confirm;
+
     private int startIndex = 0;
 
     private int selected = -1;
@@ -35,9 +40,9 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
         super(menu, inventory, component);
         this.cards = new ArrayList<>();
         this.imageWidth = 172;
-        this.imageHeight = 208;
+        this.imageHeight = 244;
         this.data = menu.data;
-        cardPool = CardPoolManager.getCardPool(data.get(0));
+        this.cardPool = CardPoolManager.getCardPool(data.get(0));
         this.cards = cardPool.cards();
     }
 
@@ -55,12 +60,35 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
         for (int i = 0; i < 3; i++) {
             int finalA = i;
             cardWidgets.add(new RewardCardWidget(startX, startY,(widget)->{
-                selected = startIndex+ finalA;
+                selected = finalA;
             }));
             startY += 48;
         }
         reset();
         cardWidgets.forEach(this::addRenderableWidget);
+
+        left = new RCRButton(leftPos+22, topPos+32, 20, 20, Component.literal("<"), (button)->{
+            if(startIndex>0){
+                startIndex--;
+                reset();
+            }
+        });
+        right = new RCRButton(leftPos+22+48*3, topPos+32, 20, 20, Component.literal(">"), (button)->{
+            if(startIndex+3<cards.size()){
+                startIndex++;
+                reset();
+            }
+        });
+        confirm = new RCRButton(leftPos+22, topPos+32+48*3, 20, 20, Component.literal("Confirm"), (button)->{
+            if(selected!=-1){
+                int cardIndex = cardPool.getCardIndex(cardWidgets.get(selected).getCard());
+                int poolIndex = CardPoolManager.getCardPoolIndex(cardPool.id());
+                RCRCardInvokeC2SMessage.send(poolIndex, cardIndex);
+            }
+        });
+        addRenderableWidget(left);
+        addRenderableWidget(right);
+        addRenderableWidget(confirm);
     }
 
     public void reset(){

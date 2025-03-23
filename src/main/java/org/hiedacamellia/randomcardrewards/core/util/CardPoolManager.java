@@ -21,7 +21,7 @@ public class CardPoolManager implements ResourceManagerReloadListener {
     private static final Map<ResourceLocation, Integer> idmap = new HashMap<>();
     private static final Map<Integer, CardPool> indexmap = new HashMap<>();
 
-    public static int cardPoolIndex(ResourceLocation id){
+    public static int getCardPoolIndex(ResourceLocation id){
         return idmap.get(id);
     }
 

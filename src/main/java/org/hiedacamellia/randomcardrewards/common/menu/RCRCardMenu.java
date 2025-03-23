@@ -2,7 +2,6 @@ package org.hiedacamellia.randomcardrewards.common.menu;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -11,14 +10,8 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
-import org.hiedacamellia.randomcardrewards.core.network.RCRCardSyncS2CMessage;
 import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
-import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 import org.hiedacamellia.randomcardrewards.registries.RCRMenu;
-import org.hiedacamellia.randomcardrewards.registries.RCRNetWork;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class RCRCardMenu extends AbstractContainerMenu {
@@ -30,7 +23,7 @@ public class RCRCardMenu extends AbstractContainerMenu {
     private static int fromNetwork(FriendlyByteBuf buf) {
         if(buf.isReadable()) {
             ResourceLocation resourceLocation = buf.readResourceLocation();
-            return CardPoolManager.cardPoolIndex(resourceLocation);
+            return CardPoolManager.getCardPoolIndex(resourceLocation);
         }else {
             return -1;
         }

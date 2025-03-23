@@ -5,9 +5,15 @@ import net.minecraft.util.RandomSource;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public record CardPool(List<RCRCard> cards, ResourceLocation id) {
+
+    public int getCardIndex(RCRCard card){
+        return cards.indexOf(card);
+    }
 
     public static final CardPool EMPTY = new CardPool(new ArrayList<>(), RandomCardRewards.rl("empty"));
 
