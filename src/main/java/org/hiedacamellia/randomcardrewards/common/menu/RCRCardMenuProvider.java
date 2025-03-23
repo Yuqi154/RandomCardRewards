@@ -19,7 +19,7 @@ public class RCRCardMenuProvider implements MenuProvider {
 
     private final List<RCRCard> cards;
 
-    public static final RCRCardMenuProvider INSTANCE = new RCRCardMenuProvider(RandomCardRewards.rl("test"));
+    public static final RCRCardMenuProvider INSTANCE = new RCRCardMenuProvider(RandomCardRewards.rl("test_pool"));
 
     public RCRCardMenuProvider(ResourceLocation pool){
         this.cards = CardPoolManager.getCardPool(pool).cards();
@@ -37,6 +37,9 @@ public class RCRCardMenuProvider implements MenuProvider {
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         if(cards!=null) {
+            for (int i1 = 0; i1 < cards.size(); i1++) {
+                RandomCardRewards.LOGGER.info("Card "+i1+": "+cards.get(i1).getName());
+            }
             cards.forEach(
                     card -> {
                         RCRCard.encode(card, buf);

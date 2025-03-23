@@ -1,5 +1,6 @@
 package org.hiedacamellia.randomcardrewards.data.builder;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
@@ -10,33 +11,35 @@ import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.hiedacamellia.randomcardrewards.core.recipe.CardPoolRecipe;
 import org.hiedacamellia.randomcardrewards.core.recipe.CardRecipe;
 import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Consumer;
 
-public class CardRecipeBuilder implements RecipeBuilder {
+public class CardPoolRecipeBuilder implements RecipeBuilder {
 
-    private final RCRCard card;
+    private final List<RCRCard> cards;
     private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 
-    protected CardRecipeBuilder(RCRCard card) {
-        this.card = card;
+    protected CardPoolRecipeBuilder(List<RCRCard> cards) {
+        this.cards = cards;
     }
 
-    public static CardRecipeBuilder card(RCRCard card) {
-        return new CardRecipeBuilder(card);
+    public static CardPoolRecipeBuilder card(List<RCRCard> cards) {
+        return new CardPoolRecipeBuilder(cards);
     }
 
     @Override
-    public CardRecipeBuilder unlockedBy(String s, CriterionTriggerInstance criterionTriggerInstance) {
+    public CardPoolRecipeBuilder unlockedBy(String s, CriterionTriggerInstance criterionTriggerInstance) {
         this.advancement.addCriterion(s, criterionTriggerInstance);
         return this;
     }
 
     @Override
-    public CardRecipeBuilder group(@Nullable String s) {
+    public CardPoolRecipeBuilder group(@Nullable String s) {
         return null;
     }
 
@@ -46,13 +49,9 @@ public class CardRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
-        save(pFinishedRecipeConsumer,card.id());
-    }
-    @Override
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
         this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(net.minecraft.advancements.AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
-        pFinishedRecipeConsumer.accept(new Result(pRecipeId,card, this.advancement, pRecipeId.withPrefix("recipes/rcrcards/")));
+        pFinishedRecipeConsumer.accept(new Result(pRecipeId,cards, this.advancement, pRecipeId.withPrefix("recipes/rcrcardpools/")));
     }
 
     public static class Result implements FinishedRecipe {
@@ -60,19 +59,23 @@ public class CardRecipeBuilder implements RecipeBuilder {
         private final ResourceLocation id;
         private final Advancement.Builder advancement;
         private final ResourceLocation advancementId;
-        private final RCRCard card;
+        private final List<RCRCard> cards;
 
-        public Result(ResourceLocation id, RCRCard card, Advancement.Builder advancement, ResourceLocation advancementId) {
+        public Result(ResourceLocation id, List<RCRCard> cards, Advancement.Builder advancement, ResourceLocation advancementId) {
             this.id = id;
             this.advancement = advancement;
             this.advancementId = advancementId;
-            this.card = card;
+            this.cards = cards;
         }
 
         @Override
         public void serializeRecipeData(JsonObject json) {
-            RCRCard.toJson(card,json);
-            json.addProperty("id",id.toString());
+            JsonArray pool = new JsonArray();
+            for (int i = 0; i < cards.size(); i++) {
+                pool.add(cards.get(i).id().toString());
+            }
+            json.add("pool", pool);
+            json.addProperty("id", id.toString());
         }
 
         @Override
@@ -82,7 +85,7 @@ public class CardRecipeBuilder implements RecipeBuilder {
 
         @Override
         public RecipeSerializer<?> getType() {
-            return CardRecipe.SERIALIZER.get();
+            return CardPoolRecipe.SERIALIZER.get();
         }
 
         @Nullable

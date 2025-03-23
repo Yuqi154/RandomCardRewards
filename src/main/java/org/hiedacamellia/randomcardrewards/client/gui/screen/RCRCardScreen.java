@@ -21,14 +21,20 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
 
     private int startIndex = 0;
 
+    private int selected = -1;
+
     public static final ResourceLocation BACKGROUND = RandomCardRewards.rl("textures/gui/gui.png");
 
     public RCRCardScreen(RCRCardMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
-        RandomCardRewards.LOGGER.debug("Screen Created");
-        this.cards = menu.cards;
+        this.cards = new ArrayList<>();
         this.imageWidth = 172;
         this.imageHeight = 208;
+    }
+
+    public void setCards(List<RCRCard> cards){
+        this.cards = cards;
+        reset();
     }
 
     @Override
@@ -38,12 +44,14 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
         int startY = topPos+32;
         cardWidgets=new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            cardWidgets.add(new RewardCardWidget(startX, startY));
+            int finalA = i;
+            cardWidgets.add(new RewardCardWidget(startX, startY,(widget)->{
+                selected = startIndex+ finalA;
+            }));
             startY += 48;
         }
         reset();
         cardWidgets.forEach(this::addRenderableWidget);
-        RandomCardRewards.LOGGER.debug("Screen Initialized");
     }
 
     public void reset(){

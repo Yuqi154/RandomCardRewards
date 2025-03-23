@@ -24,8 +24,8 @@ public record CardPool(List<RCRCard> cards) {
         RandomCardRewards.LOGGER.info("Total cards: "+cards.size());
 
         if(n>cards.size()) {
-            RandomCardRewards.LOGGER.warn("Not enough cards, returning empty");
-            List<RCRCard> empty = new ArrayList<>();
+            RandomCardRewards.LOGGER.warn("Not enough cards, returning with empty");
+            List<RCRCard> empty = new ArrayList<>(cards);
             for(int i=0;i<n;i++){
                 empty.add(RCRCard.EMPTY);
             }

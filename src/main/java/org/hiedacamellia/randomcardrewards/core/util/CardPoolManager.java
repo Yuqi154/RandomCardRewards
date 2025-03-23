@@ -17,7 +17,7 @@ import java.util.Map;
 public class CardPoolManager implements ResourceManagerReloadListener {
 
     private static RecipeManager recipeManager;
-    private static final Map<ResourceLocation,CardPool> map = new HashMap<>();
+    private static final Map<ResourceLocation, CardPool> map = new HashMap<>();
 
     public static void addCardPool(ResourceLocation id, CardPool pool) {
         map.put(id, pool);
@@ -28,6 +28,7 @@ public class CardPoolManager implements ResourceManagerReloadListener {
             RandomCardRewards.LOGGER.error("Card pool "+id+" not found, returning empty");
             return new CardPool(new ArrayList<>());
         }
+        RandomCardRewards.LOGGER.debug("Card pool "+id+" found");
         return map.get(id);
     }
 
@@ -39,6 +40,8 @@ public class CardPoolManager implements ResourceManagerReloadListener {
     @Override
     public void onResourceManagerReload(ResourceManager resourceManager) {
         map.clear();
+
+        RandomCardRewards.LOGGER.debug("Loading card pools");
 
         List<CardPoolRecipe> pools = recipeManager.getAllRecipesFor(CardPoolRecipe.TYPE.get());
         List<CardRecipe> cards = recipeManager.getAllRecipesFor(CardRecipe.TYPE.get());
