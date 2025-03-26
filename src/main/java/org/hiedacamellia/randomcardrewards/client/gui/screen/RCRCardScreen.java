@@ -54,32 +54,32 @@ public class RCRCardScreen extends AbstractContainerScreen<RCRCardMenu> {
     @Override
     public void init(){
         super.init();
-        int startX = leftPos+22;
-        int startY = topPos+32;
+        int startX = leftPos+18;
+        int startY = topPos+18;
         cardWidgets=new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             int finalA = i;
             cardWidgets.add(new RewardCardWidget(startX, startY,(widget)->{
                 selected = finalA;
             }));
-            startY += 48;
+            startY += 40;
         }
         reset();
         cardWidgets.forEach(this::addRenderableWidget);
 
-        left = new RCRButton(leftPos+12, topPos+212, 20, 20, Component.literal("<"), (button)->{
+        left = new RCRButton(leftPos+12, topPos+imageHeight-25, 20, 20, Component.literal("<"), (button)->{
             if(startIndex>0){
                 startIndex--;
                 reset();
             }
         });
-        right = new RCRButton(leftPos+172-12-20, topPos+212, 20, 20, Component.literal(">"), (button)->{
+        right = new RCRButton(leftPos+imageWidth-12-20, topPos+imageHeight-25, 20, 20, Component.literal(">"), (button)->{
             if(startIndex+3<cards.size()){
                 startIndex++;
                 reset();
             }
         });
-        confirm = new RCRButton(leftPos+172/2-50, topPos+212, 100, 20, Component.literal("Confirm"), (button)->{
+        confirm = new RCRButton(leftPos+imageWidth/2-40, topPos+imageHeight-25, 80, 20, Component.literal("Confirm"), (button)->{
             if(selected!=-1){
                 int cardIndex = cardPool.getCardIndex(cardWidgets.get(selected).getCard());
                 int poolIndex = CardPoolManager.getCardPoolIndex(cardPool.id());

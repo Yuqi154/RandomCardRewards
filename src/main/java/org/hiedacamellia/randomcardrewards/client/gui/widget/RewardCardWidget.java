@@ -23,7 +23,7 @@ public class RewardCardWidget extends RCRButton {
     public static final ResourceLocation BACKGROUND_UNCHOOSED = RandomCardRewards.rl("textures/gui/default_background_unchoosed.png");
 
     public RewardCardWidget(int x, int y,OnPress onPress) {
-        super(x, y, 128, 48, Component.empty(),onPress);
+        super(x, y, 128, 40, Component.empty(),onPress);
     }
 
     public void setCard(RCRCard card) {
@@ -38,7 +38,7 @@ public class RewardCardWidget extends RCRButton {
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         guiGraphics.blit(isFocused()?BACKGROUND_UNCHOOSED:BACKGROUND_UNCHOOSE,this.getX(),this.getY(),this.getWidth(),this.getHeight(),0,0,128,48,128,48);
         Font font = Minecraft.getInstance().font;
-        guiGraphics.drawString(font, card.getName(), this.getX() + 40, this.getY() + 19, 0xFFFFFF);
+        guiGraphics.drawString(font, card.getName(), this.getX() + 40, this.getY() + 15, 0xFFFFFF);
         Component description = card.getDescription();
         if(isHovered())
             guiGraphics.renderComponentTooltip(font,List.of(description),mouseX,mouseY);
@@ -46,9 +46,9 @@ public class RewardCardWidget extends RCRButton {
         if (Objects.requireNonNull(card.content().type()) == CardType.ITEM) {
             ResourceLocation resourceLocation = new ResourceLocation(card.content().content());
             ItemStack itemStack = ForgeRegistries.ITEMS.getValue(resourceLocation).getDefaultInstance();
-            guiGraphics.renderItem(itemStack, this.getX() + 10, this.getY() + 16);
+            guiGraphics.renderItem(itemStack, this.getX() + 10, this.getY() + 12);
         } else {
-            guiGraphics.blit(card.texture(), this.getX() + 10, this.getY() + 16, 16, 16, 0, 0, 16, 16, 16, 16);
+            guiGraphics.blit(card.texture(), this.getX() + 10, this.getY() + 12, 16, 16, 0, 0, 16, 16, 16, 16);
         }
 
     }
