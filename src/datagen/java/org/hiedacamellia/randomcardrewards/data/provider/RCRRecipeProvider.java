@@ -27,10 +27,34 @@ public class RCRRecipeProvider extends RecipeProvider {
                 RandomCardRewards.rl("test"),
                 CardContent.EMPTY
         );
+        RCRCard rcrCard1 = new RCRCard(
+                RandomCardRewards.rl("test1"),
+                "test1",
+                "test",
+                RandomCardRewards.rl("test1"),
+                CardContent.EMPTY
+        );
+        RCRCard rcrCard2 = new RCRCard(
+                RandomCardRewards.rl("test2"),
+                "test2",
+                "descriptionKey",
+                RandomCardRewards.rl("test2"),
+                CardContent.EMPTY
+        );
+        RCRCard rcrCard3 = new RCRCard(
+                RandomCardRewards.rl("test3"),
+                "test3",
+                "descriptionKey",
+                RandomCardRewards.rl("test3"),
+                CardContent.EMPTY
+        );
 
         CardRecipeBuilder.card(rcrCard).save(consumer);
+        CardRecipeBuilder.card(rcrCard1).save(consumer);
+        CardRecipeBuilder.card(rcrCard2).save(consumer);
+        CardRecipeBuilder.card(rcrCard3).save(consumer);
 
-        CardPoolRecipeBuilder.card(List.of(rcrCard))
+        CardPoolRecipeBuilder.card(List.of(rcrCard,rcrCard1,rcrCard2,rcrCard3))
                 .save(consumer,RandomCardRewards.rl("test_pool"));
 
     }

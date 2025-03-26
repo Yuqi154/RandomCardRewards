@@ -31,6 +31,9 @@ public class CardPoolRecipeBuilder implements RecipeBuilder {
     public static CardPoolRecipeBuilder card(List<RCRCard> cards) {
         return new CardPoolRecipeBuilder(cards);
     }
+    public static CardPoolRecipeBuilder card(RCRCard... cards) {
+        return card(List.of(cards));
+    }
 
     @Override
     public CardPoolRecipeBuilder unlockedBy(String s, CriterionTriggerInstance criterionTriggerInstance) {
