@@ -63,6 +63,10 @@
 - id 卡牌池ID，必须唯一
 - pool 卡牌池列表，填入卡牌ID
 
+## 使用datagen生成~
+
+去看`org/hiedacamellia/randomcardrewards/data/provider/RCRRecipeProvider.java`
+
 # 卡牌事件~
 
 - `CardInvokeEvent.Pre` 事件在卡牌被触发前调用
