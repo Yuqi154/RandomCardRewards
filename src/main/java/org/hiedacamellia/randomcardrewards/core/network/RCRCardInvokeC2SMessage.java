@@ -7,15 +7,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.CommandBlock;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.hiedacamellia.randomcardrewards.core.util.CardPool;
-import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
-import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
+import org.hiedacamellia.randomcardrewards.api.event.CardInvokeEvent;
+import org.hiedacamellia.randomcardrewards.core.card.CardPool;
+import org.hiedacamellia.randomcardrewards.core.card.CardPoolManager;
+import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
 import org.hiedacamellia.randomcardrewards.registries.RCRNetWork;
 
 import java.util.function.Supplier;
@@ -60,21 +61,25 @@ public class RCRCardInvokeC2SMessage {
                 ServerPlayer serverPlayer = context.getSender();
                 CardPool cardPool = CardPoolManager.getCardPool(msg.poolid);
                 RCRCard card = cardPool.getCard(msg.cardid);
+
+                boolean post = MinecraftForge.EVENT_BUS.post(new CardInvokeEvent.Pre(card,serverPlayer));
+                if(post) return;
+
                 switch (card.content().type()){
                     case NONE:
                         break;
                     case ITEM: {
                         ResourceLocation resourceLocation = new ResourceLocation(card.content().content());
-                        ItemStack itemStack = ForgeRegistries.ITEMS.getValue(resourceLocation).getDefaultInstance();
+                        ItemStack itemStack = new ItemStack(ForgeRegistries.ITEMS.getValue(resourceLocation),card.content().i1());
                         serverPlayer.addItem(itemStack);
-                    }
                         break;
+                    }
                     case EFFECT: {
                         ResourceLocation resourceLocation = new ResourceLocation(card.content().content());
                         MobEffect value = ForgeRegistries.MOB_EFFECTS.getValue(resourceLocation);
-                        serverPlayer.addEffect(new MobEffectInstance(value));
-                    }
+                        serverPlayer.addEffect(new MobEffectInstance(value,card.content().i2(),card.content().i1()));
                         break;
+                    }
                     case COMMAND:{
                         CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
                         serverPlayer.server.getCommands().performPrefixedCommand(commandSourceStack, card.content().content());
@@ -82,7 +87,7 @@ public class RCRCardInvokeC2SMessage {
 
                 }
 
-
+                MinecraftForge.EVENT_BUS.post(new CardInvokeEvent.Post(card,serverPlayer));
             }
 
         });

@@ -3,9 +3,11 @@ package org.hiedacamellia.randomcardrewards.data.provider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Items;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
-import org.hiedacamellia.randomcardrewards.core.util.CardContent;
-import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
+import org.hiedacamellia.randomcardrewards.core.card.CardContent;
+import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
 import org.hiedacamellia.randomcardrewards.data.builder.CardPoolRecipeBuilder;
 import org.hiedacamellia.randomcardrewards.data.builder.CardRecipeBuilder;
 
@@ -25,28 +27,28 @@ public class RCRRecipeProvider extends RecipeProvider {
                 "test",
                 "test",
                 RandomCardRewards.rl("test"),
-                CardContent.EMPTY
+                CardContent.effect(MobEffects.DAMAGE_BOOST,10,1000)
         );
         RCRCard rcrCard1 = new RCRCard(
                 RandomCardRewards.rl("test1"),
                 "test1",
                 "test",
                 RandomCardRewards.rl("test1"),
-                CardContent.EMPTY
+                CardContent.command("time set day")
         );
         RCRCard rcrCard2 = new RCRCard(
                 RandomCardRewards.rl("test2"),
                 "test2",
                 "descriptionKey",
                 RandomCardRewards.rl("test2"),
-                CardContent.EMPTY
+                CardContent.item(Items.IRON_INGOT,2)
         );
         RCRCard rcrCard3 = new RCRCard(
                 RandomCardRewards.rl("test3"),
                 "test3",
                 "descriptionKey",
                 RandomCardRewards.rl("test3"),
-                CardContent.EMPTY
+                CardContent.item(Items.DIAMOND,12)
         );
 
         CardRecipeBuilder.card(rcrCard).save(consumer);

@@ -1,4 +1,4 @@
-package org.hiedacamellia.randomcardrewards.core.util;
+package org.hiedacamellia.randomcardrewards.core.card;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;

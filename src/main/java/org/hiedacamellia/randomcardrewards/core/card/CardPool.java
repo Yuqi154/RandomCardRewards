@@ -1,13 +1,11 @@
-package org.hiedacamellia.randomcardrewards.core.util;
+package org.hiedacamellia.randomcardrewards.core.card;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public record CardPool(List<RCRCard> cards, ResourceLocation id) {
 

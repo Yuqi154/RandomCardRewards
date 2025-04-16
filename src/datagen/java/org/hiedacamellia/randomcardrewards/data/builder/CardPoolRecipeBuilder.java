@@ -12,8 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.hiedacamellia.randomcardrewards.core.recipe.CardPoolRecipe;
-import org.hiedacamellia.randomcardrewards.core.recipe.CardRecipe;
-import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
+import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
 
 import javax.annotation.Nullable;
 import java.util.List;

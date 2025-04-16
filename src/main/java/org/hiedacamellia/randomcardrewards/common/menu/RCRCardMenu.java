@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
-import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
+import org.hiedacamellia.randomcardrewards.core.card.CardPoolManager;
 import org.hiedacamellia.randomcardrewards.registries.RCRMenu;
 
 

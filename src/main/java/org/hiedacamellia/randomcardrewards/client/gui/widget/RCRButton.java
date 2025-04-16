@@ -17,9 +17,6 @@ public class RCRButton extends AbstractButton {
 
 
     protected final OnPress onPress;
-    protected final Font font = Minecraft.getInstance().font;
-
-    public static final ResourceLocation BUTTON_TEXTURES = RandomCardRewards.rl("textures/gui/button.png");
 
     @OnlyIn(Dist.CLIENT)
     public interface OnPress {
@@ -33,8 +30,7 @@ public class RCRButton extends AbstractButton {
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        guiGraphics.blit(BUTTON_TEXTURES,this.getX(),this.getY(),this.getWidth(),this.getHeight(),0,0,64,32,64,32);
-        this.renderString(guiGraphics, font, getFGColor() | Mth.ceil(this.alpha * 255.0F) << 24);
+        super.renderWidget(guiGraphics, mouseX, mouseY, delta);
     }
 
     @Override

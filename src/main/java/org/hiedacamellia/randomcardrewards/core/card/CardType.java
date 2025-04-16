@@ -1,7 +1,6 @@
-package org.hiedacamellia.randomcardrewards.core.util;
+package org.hiedacamellia.randomcardrewards.core.card;
 
 import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
 
 public enum CardType {
     ITEM("item"),

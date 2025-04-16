@@ -9,12 +9,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
-import org.hiedacamellia.randomcardrewards.core.util.CardPool;
-import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
-import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
+import org.hiedacamellia.randomcardrewards.core.card.CardPool;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class RCRCardMenuProvider implements MenuProvider {
 

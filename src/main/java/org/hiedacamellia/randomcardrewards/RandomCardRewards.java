@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.hiedacamellia.randomcardrewards.core.config.RCRCommonConfig;
-import org.hiedacamellia.randomcardrewards.core.util.CardPoolManager;
+import org.hiedacamellia.randomcardrewards.core.card.CardPoolManager;
 import org.hiedacamellia.randomcardrewards.registries.RCRMenu;
 import org.hiedacamellia.randomcardrewards.registries.RCRRecipeType;
 import org.slf4j.Logger;

@@ -32,7 +32,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
-import org.hiedacamellia.randomcardrewards.core.util.RCRCard;
+import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
 import org.jetbrains.annotations.Nullable;
 
 public class CardRecipe implements Recipe<Inventory> {
