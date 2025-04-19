@@ -14,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.hiedacamellia.randomcardrewards.api.event.CardInvokeEvent;
+import org.hiedacamellia.randomcardrewards.api.kubejs.RCREventPoster;
 import org.hiedacamellia.randomcardrewards.core.card.CardPool;
 import org.hiedacamellia.randomcardrewards.core.card.CardPoolManager;
 import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
@@ -61,9 +62,11 @@ public class RCRCardInvokeC2SMessage {
                 ServerPlayer serverPlayer = context.getSender();
                 CardPool cardPool = CardPoolManager.getCardPool(msg.poolid);
                 RCRCard card = cardPool.getCard(msg.cardid);
+                CardInvokeEvent.Pre pre = new CardInvokeEvent.Pre(card, serverPlayer);
+                MinecraftForge.EVENT_BUS.post(pre);
+                RCREventPoster.post(pre);
 
-                boolean post = MinecraftForge.EVENT_BUS.post(new CardInvokeEvent.Pre(card,serverPlayer));
-                if(post) return;
+                if(pre.isCanceled()) return;
 
                 switch (card.content().type()){
                     case NONE:
@@ -86,8 +89,9 @@ public class RCRCardInvokeC2SMessage {
                     }
 
                 }
-
-                MinecraftForge.EVENT_BUS.post(new CardInvokeEvent.Post(card,serverPlayer));
+                CardInvokeEvent.Post post = new CardInvokeEvent.Post(card, serverPlayer);
+                MinecraftForge.EVENT_BUS.post(post);
+                RCREventPoster.post(post);
             }
 
         });

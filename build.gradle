@@ -7,7 +7,7 @@ group = mod_group_id
 version = mod_version
 
 base {
-    archivesName = mod_name
+    archivesName = "$mod_id-forge-$minecraft_version"
 }
 
 java {
@@ -74,15 +74,30 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url = "https://maven.theillusivec4.top/" }
     maven { url "https://maven.shedaniel.me/" }
+    maven {
+        url "https://maven.latvian.dev/releases"
+        content {
+            includeGroup "dev.latvian.mods"
+            includeGroup "dev.latvian.apps"
+        }
+    }
+
+    maven {
+        url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
+    }
 }
 
 dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
-    modImplementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixinextras_version}"))
 
     compileOnly 'org.jetbrains:annotations:24.0.1'
+
+    modApi("dev.latvian.mods:kubejs-forge:$kubejs_version")
+    //interfaceInjectionData("dev.latvian.mods:kubejs-forge:$kubejs_version") // optional
 }
 
 processResources {
