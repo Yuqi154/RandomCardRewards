@@ -2,7 +2,6 @@ package org.hiedacamellia.randomcardrewards.api.kubejs;
 
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
-import dev.latvian.mods.kubejs.event.Extra;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 
 public interface RandomCardRewardsJSEvents {

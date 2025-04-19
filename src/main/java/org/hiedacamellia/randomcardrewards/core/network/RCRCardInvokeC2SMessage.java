@@ -64,7 +64,7 @@ public class RCRCardInvokeC2SMessage {
                 RCRCard card = cardPool.getCard(msg.cardid);
                 CardInvokeEvent.Pre pre = new CardInvokeEvent.Pre(card, serverPlayer);
                 MinecraftForge.EVENT_BUS.post(pre);
-                RCREventPoster.post(pre);
+                RCREventPoster.INSTANCE.post(pre);
 
                 if(pre.isCanceled()) return;
 
@@ -91,7 +91,7 @@ public class RCRCardInvokeC2SMessage {
                 }
                 CardInvokeEvent.Post post = new CardInvokeEvent.Post(card, serverPlayer);
                 MinecraftForge.EVENT_BUS.post(post);
-                RCREventPoster.post(post);
+                RCREventPoster.INSTANCE.post(post);
             }
 
         });
