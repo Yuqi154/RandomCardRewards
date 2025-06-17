@@ -76,7 +76,6 @@ public class RCRCardScreen extends Screen {
         });
         confirm = new RCRButton(leftPos+imageWidth/2-40, topPos+imageHeight-25, 80, 20, Component.literal("Confirm"), (button)->{
             if(selected!=-1){
-
                 RCRCardInvokeC2SMessage.send(tmpPollId, cards.get(startIndex + selected).id());
                 onClose();
             }

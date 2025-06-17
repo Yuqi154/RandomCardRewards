@@ -1,6 +1,5 @@
-package org.hiedacamellia.randomcardrewards.api.kubejs;
+package org.hiedacamellia.randomcardrewards.api;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.hiedacamellia.randomcardrewards.content.card.*;

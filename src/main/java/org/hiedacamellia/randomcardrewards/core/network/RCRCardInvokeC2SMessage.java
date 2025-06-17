@@ -96,7 +96,8 @@ public class RCRCardInvokeC2SMessage {
                     MinecraftForge.EVENT_BUS.post(post);
                     RCREventPoster.INSTANCE.post(post);
 
-                    TmpCardPoolManager.remove(msg.tmpPollId);
+                    if(TmpCardPoolManager.shouldRemove(msg.tmpPollId))
+                        TmpCardPoolManager.remove(msg.tmpPollId);
                 }
 
 

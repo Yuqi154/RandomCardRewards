@@ -27,13 +27,18 @@ public class TmpCardPoolManager {
     public static List<RCRCard> get(int id){
         return cardPools.get(id);
     }
+    public static boolean shouldRemove(int id){
+        return shouldRemoves.getOrDefault(id, false);
+    }
 
     public static void remove(int id){
         cardPools.remove(id);
+        shouldRemoves.remove(id);
     }
 
     public static void clear(){
         cardPools.clear();
+        shouldRemoves.clear();
         id = 0;
     }
 }

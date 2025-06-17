@@ -4,6 +4,7 @@ import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
+import org.hiedacamellia.randomcardrewards.api.RandomCardRewardsAPI;
 import org.hiedacamellia.randomcardrewards.content.card.CardPool;
 import org.hiedacamellia.randomcardrewards.content.card.RCRCard;
 
