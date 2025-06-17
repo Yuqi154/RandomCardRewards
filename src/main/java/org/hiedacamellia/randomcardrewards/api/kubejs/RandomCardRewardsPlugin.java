@@ -18,9 +18,9 @@ public class RandomCardRewardsPlugin extends KubeJSPlugin {
 
     @Override
     public void registerBindings(BindingsEvent event) {
-        event.add("RCRCardAPI", RandomCardRewardsAPI.class);
+        event.add("RandomCardRewardsAPI", RandomCardRewardsAPI.class);
         event.add("RCRCard", RCRCard.class);
-        event.add("RCRCardPool", CardPool.class);
+        event.add("CardPool", CardPool.class);
         event.add("CardContent", CardContent.class);
     }
 
