@@ -1,4 +1,4 @@
-package org.hiedacamellia.randomcardrewards.core.card;
+package org.hiedacamellia.randomcardrewards.content.card;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -47,5 +47,10 @@ public record CardPool(List<RCRCard> cards, ResourceLocation id) {
             rcrCards.remove(card);
         }
         return new ArrayList<>(cardSet);
+    }
+
+    public static CardPool of(Object o){
+        String string = String.valueOf(o);
+        return CardPoolManager.getCardPool(string);
     }
 }

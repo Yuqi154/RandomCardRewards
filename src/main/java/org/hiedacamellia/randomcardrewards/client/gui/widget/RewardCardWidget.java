@@ -9,8 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
-import org.hiedacamellia.randomcardrewards.core.card.CardType;
-import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
+import org.hiedacamellia.randomcardrewards.content.card.CardType;
+import org.hiedacamellia.randomcardrewards.content.card.RCRCard;
 
 import java.util.List;
 import java.util.Objects;

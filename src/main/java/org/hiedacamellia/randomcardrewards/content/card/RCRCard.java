@@ -1,12 +1,17 @@
-package org.hiedacamellia.randomcardrewards.core.card;
+package org.hiedacamellia.randomcardrewards.content.card;
 
 import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
+import org.slf4j.Logger;
 
 public record RCRCard(ResourceLocation id,String nameKey,String descriptionKey,ResourceLocation texture,CardContent content) {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public static final RCRCard EMPTY = new RCRCard(RandomCardRewards.rl("empty"), "empty", "empty", RandomCardRewards.rl("empty"), CardContent.EMPTY);
 
@@ -58,5 +63,21 @@ public record RCRCard(ResourceLocation id,String nameKey,String descriptionKey,R
         JsonObject content = new JsonObject();
         CardContent.toJson(card.content, content);
         object.add("content", content);
+    }
+
+
+    public static RCRCard of(Object o) {
+        String string = String.valueOf(o);
+        if (string.startsWith("rcr:")) {
+            string = string.substring(4);
+            RCRCard rcrCard = RCRCard.fromJson(GsonHelper.parse(string));
+            if(!CardManager.hasCard(rcrCard.id())){
+                LOGGER.info("Card {} not found, adding to cache", rcrCard.id());
+                CardManager.addCard(rcrCard.id(), rcrCard);
+            }
+            return rcrCard;
+        }else {
+            return CardManager.getCard(string);
+        }
     }
 }

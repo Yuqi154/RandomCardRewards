@@ -6,7 +6,6 @@ import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
-import org.hiedacamellia.randomcardrewards.common.menu.RCRCardMenu;
 
 public class RCRMenu {
 	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, RandomCardRewards.MODID);

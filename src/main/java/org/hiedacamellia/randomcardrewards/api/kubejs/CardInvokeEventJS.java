@@ -1,12 +1,9 @@
 package org.hiedacamellia.randomcardrewards.api.kubejs;
 
-
 import dev.latvian.mods.kubejs.event.EventJS;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.eventbus.api.Cancelable;
-import net.minecraftforge.eventbus.api.Event;
 import org.hiedacamellia.randomcardrewards.api.event.CardInvokeEvent;
-import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
+import org.hiedacamellia.randomcardrewards.content.card.RCRCard;
 
 public abstract class CardInvokeEventJS extends EventJS {
 

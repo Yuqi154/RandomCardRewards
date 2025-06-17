@@ -12,40 +12,40 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.hiedacamellia.randomcardrewards.api.event.CardInvokeEvent;
 import org.hiedacamellia.randomcardrewards.api.kubejs.RCREventPoster;
-import org.hiedacamellia.randomcardrewards.core.card.CardPool;
-import org.hiedacamellia.randomcardrewards.core.card.CardPoolManager;
-import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
+import org.hiedacamellia.randomcardrewards.content.card.*;
 import org.hiedacamellia.randomcardrewards.registries.RCRNetWork;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RCRCardInvokeC2SMessage {
-    
-    private final int poolid;
-    private final int cardid;
-    
-    public RCRCardInvokeC2SMessage(int poolid, int cardid) {
-        this.poolid = poolid;
+
+    private final int tmpPollId;
+    private final ResourceLocation cardid;
+
+    public RCRCardInvokeC2SMessage(int tmpPollId, ResourceLocation cardid) {
+        this.tmpPollId = tmpPollId;
         this.cardid = cardid;
     }
-    
+
     public static RCRCardInvokeC2SMessage decode(FriendlyByteBuf buffer) {
-        int poolid = buffer.readInt();
-        int cardid = buffer.readInt();
-        return new RCRCardInvokeC2SMessage(poolid, cardid);
-    }
-    
-    public static void encode(RCRCardInvokeC2SMessage message, FriendlyByteBuf buffer) {
-        buffer.writeInt(message.poolid);
-        buffer.writeInt(message.cardid);
+        int tmpPollId = buffer.readInt();
+        ResourceLocation cardid = buffer.readResourceLocation();
+        return new RCRCardInvokeC2SMessage(tmpPollId, cardid);
     }
 
-    public static void send(int poolid, int cardid) {
-        RCRNetWork.PACKET_HANDLER.sendToServer(new RCRCardInvokeC2SMessage(poolid, cardid));
+    public static void encode(RCRCardInvokeC2SMessage message, FriendlyByteBuf buffer) {
+        buffer.writeInt(message.tmpPollId);
+        buffer.writeResourceLocation(message.cardid);
+    }
+
+    public static void send(int tmpPollId, ResourceLocation cardid) {
+        RCRNetWork.PACKET_HANDLER.sendToServer(new RCRCardInvokeC2SMessage(tmpPollId, cardid));
     }
 
 
@@ -60,38 +60,47 @@ public class RCRCardInvokeC2SMessage {
         context.enqueueWork(() -> {
             if(context.getSender()!=null){
                 ServerPlayer serverPlayer = context.getSender();
-                CardPool cardPool = CardPoolManager.getCardPool(msg.poolid);
-                RCRCard card = cardPool.getCard(msg.cardid);
-                CardInvokeEvent.Pre pre = new CardInvokeEvent.Pre(card, serverPlayer);
-                MinecraftForge.EVENT_BUS.post(pre);
-                RCREventPoster.INSTANCE.post(pre);
 
-                if(pre.isCanceled()) return;
+                List<RCRCard> cardPool = TmpCardPoolManager.get(msg.tmpPollId);
+                RCRCard card = CardManager.getCard(msg.cardid);
+                if(cardPool.contains(card)){
 
-                switch (card.content().type()){
-                    case NONE:
-                        break;
-                    case ITEM: {
-                        ResourceLocation resourceLocation = new ResourceLocation(card.content().content());
-                        ItemStack itemStack = new ItemStack(ForgeRegistries.ITEMS.getValue(resourceLocation),card.content().i1());
-                        serverPlayer.addItem(itemStack);
-                        break;
-                    }
-                    case EFFECT: {
-                        ResourceLocation resourceLocation = new ResourceLocation(card.content().content());
-                        MobEffect value = ForgeRegistries.MOB_EFFECTS.getValue(resourceLocation);
-                        serverPlayer.addEffect(new MobEffectInstance(value,card.content().i2(),card.content().i1()));
-                        break;
-                    }
-                    case COMMAND:{
-                        CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
-                        serverPlayer.server.getCommands().performPrefixedCommand(commandSourceStack, card.content().content());
-                    }
+                    CardInvokeEvent.Pre pre = new CardInvokeEvent.Pre(card, serverPlayer);
+                    MinecraftForge.EVENT_BUS.post(pre);
+                    RCREventPoster.INSTANCE.post(pre);
 
+                    if(pre.isCanceled()) return;
+
+                    switch (card.content().type()){
+                        case NONE:
+                            break;
+                        case ITEM: {
+                            ResourceLocation resourceLocation = new ResourceLocation(card.content().content());
+                            ItemStack itemStack = new ItemStack(ForgeRegistries.ITEMS.getValue(resourceLocation),card.content().i1());
+                            serverPlayer.addItem(itemStack);
+                            break;
+                        }
+                        case EFFECT: {
+                            ResourceLocation resourceLocation = new ResourceLocation(card.content().content());
+                            MobEffect value = ForgeRegistries.MOB_EFFECTS.getValue(resourceLocation);
+                            serverPlayer.addEffect(new MobEffectInstance(value,card.content().i2(),card.content().i1()));
+                            break;
+                        }
+                        case COMMAND:{
+                            CommandSourceStack commandSourceStack = serverPlayer.createCommandSourceStack();
+                            serverPlayer.server.getCommands().performPrefixedCommand(commandSourceStack, card.content().content());
+                        }
+
+                    }
+                    CardInvokeEvent.Post post = new CardInvokeEvent.Post(card, serverPlayer);
+                    MinecraftForge.EVENT_BUS.post(post);
+                    RCREventPoster.INSTANCE.post(post);
+
+                    TmpCardPoolManager.remove(msg.tmpPollId);
                 }
-                CardInvokeEvent.Post post = new CardInvokeEvent.Post(card, serverPlayer);
-                MinecraftForge.EVENT_BUS.post(post);
-                RCREventPoster.INSTANCE.post(post);
+
+
+
             }
 
         });

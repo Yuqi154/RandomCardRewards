@@ -4,7 +4,7 @@ package org.hiedacamellia.randomcardrewards.api.event;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
+import org.hiedacamellia.randomcardrewards.content.card.RCRCard;
 
 public abstract class CardInvokeEvent extends Event {
 

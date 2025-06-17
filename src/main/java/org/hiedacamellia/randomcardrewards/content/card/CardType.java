@@ -1,4 +1,4 @@
-package org.hiedacamellia.randomcardrewards.core.card;
+package org.hiedacamellia.randomcardrewards.content.card;
 
 import com.google.gson.JsonObject;
 

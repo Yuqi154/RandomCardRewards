@@ -6,8 +6,8 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Items;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
-import org.hiedacamellia.randomcardrewards.core.card.CardContent;
-import org.hiedacamellia.randomcardrewards.core.card.RCRCard;
+import org.hiedacamellia.randomcardrewards.content.card.CardContent;
+import org.hiedacamellia.randomcardrewards.content.card.RCRCard;
 import org.hiedacamellia.randomcardrewards.data.builder.CardPoolRecipeBuilder;
 import org.hiedacamellia.randomcardrewards.data.builder.CardRecipeBuilder;
 
