@@ -1,7 +1,9 @@
 # 简要教程~
 
 - 打开一个选择界面  
-  `/randomcardrewards rewards <pool> <player>`
+  `/randomcardrewards rewards <pool> <count> <player>`
+- 列出所有卡牌池  
+  `/randomcardrewards list_pools`
 
 # 数据驱动~
 
@@ -90,3 +92,18 @@
     - `String` `content` 内容
     - `int` `i1` 额外数值
     - `int` `i2` 额外数值
+
+# kubejs part~
+
+- 使用API  
+  看 `org/hiedacamellia/randomcardrewards/api/RandomCardRewardsAPI.java` [跳转](src/main/java/org/hiedacamellia/randomcardrewards/api/RandomCardRewardsAPI.java)
+
+- TypeWrapper  
+  目前可以从文本直接变成RCRCard和CardPool  
+  或者使用`RCRCard.of()`, `CardPool.of()`
+- 怎么在kubejs里让玩家打开界面
+  ```javascript
+  let poolid = RandomCardRewardsAPI.createTmpCardPoolFromPoolRandomly("your_pool",<count>)
+  RandomCardRewardsAPI.rewardPlayerTmpPool(<player>, poolid);
+  ```
+  每个创建临时卡牌池的函数都可以加一个是否在使用后自动移除临时卡牌池的参数，默认为`false`.
