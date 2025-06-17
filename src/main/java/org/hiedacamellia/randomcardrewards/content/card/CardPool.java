@@ -1,13 +1,17 @@
 package org.hiedacamellia.randomcardrewards.content.card;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import org.hiedacamellia.randomcardrewards.RandomCardRewards;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public record CardPool(List<RCRCard> cards, ResourceLocation id) {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public int getCardIndex(RCRCard card){
         return cards.indexOf(card);
@@ -27,11 +31,11 @@ public record CardPool(List<RCRCard> cards, ResourceLocation id) {
 
     public List<RCRCard> getRandomCards(int n){
         //不重复获取
-        RandomCardRewards.LOGGER.info("Getting "+n+" random cards");
-        RandomCardRewards.LOGGER.info("Total cards: "+cards.size());
+        LOGGER.debug("Getting {} random cards", n);
+        LOGGER.debug("Total cards: {}", cards.size());
 
         if(n>cards.size()) {
-            RandomCardRewards.LOGGER.warn("Not enough cards, returning with empty");
+            LOGGER.warn("Not enough cards, returning with empty");
             List<RCRCard> empty = new ArrayList<>(cards);
             for(int i=0;i<n;i++){
                 empty.add(RCRCard.EMPTY);
@@ -51,6 +55,9 @@ public record CardPool(List<RCRCard> cards, ResourceLocation id) {
 
     public static CardPool of(Object o){
         String string = String.valueOf(o);
+        if(!string.contains(":")){
+            return CardPoolManager.getCardPool(new ResourceLocation(RandomCardRewards.MODID,string));
+        }
         return CardPoolManager.getCardPool(string);
     }
 }

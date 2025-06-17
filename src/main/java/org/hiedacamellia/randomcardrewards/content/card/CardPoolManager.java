@@ -33,6 +33,10 @@ public class CardPoolManager implements ResourceManagerReloadListener {
         return map.getOrDefault(id, CardPool.EMPTY);
     }
 
+    public static List<CardPool> getCardPools() {
+        return new ArrayList<>(map.values());
+    }
+
     public static void onAddResourceReloadListener(AddReloadListenerEvent event){
         event.addListener(new CardPoolManager());
         recipeManager = event.getServerResources().getRecipeManager();
@@ -43,7 +47,7 @@ public class CardPoolManager implements ResourceManagerReloadListener {
         CardManager.load(recipeManager);
         map.clear();
         long startTime = System.currentTimeMillis();
-        LOGGER.info("Loading card pools");
+        LOGGER.info("Loading card pools...");
 
 
         List<CardPoolRecipe> pools = recipeManager.getAllRecipesFor(CardPoolRecipe.TYPE.get());

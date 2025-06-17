@@ -33,6 +33,9 @@ public class RandomCardRewardsAPI {
     public static void removeTmpCardPool(int id) {
         TmpCardPoolManager.remove(id);
     }
+    public static List<CardPool> getAllCardPools() {
+        return CardPoolManager.getCardPools();
+    }
 
     public static void rewardPlayerCards(Player player, List<RCRCard> cards){
         if(player instanceof ServerPlayer serverPlayer) {

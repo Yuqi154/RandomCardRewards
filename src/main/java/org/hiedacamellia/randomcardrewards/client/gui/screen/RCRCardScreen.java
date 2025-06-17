@@ -3,6 +3,7 @@ package org.hiedacamellia.randomcardrewards.client.gui.screen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.hiedacamellia.randomcardrewards.RandomCardRewards;
 import org.hiedacamellia.randomcardrewards.client.gui.widget.RCRButton;
 import org.hiedacamellia.randomcardrewards.client.gui.widget.RewardCardWidget;
 import org.hiedacamellia.randomcardrewards.core.network.RCRCardInvokeC2SMessage;
@@ -24,35 +25,33 @@ public class RCRCardScreen extends Screen {
 
     private int selected = -1;
 
-
     private final int imageWidth;
     private final int imageHeight;
-    private final int leftPos;
-    private final int topPos;
+    private int leftPos;
+    private int topPos;
     private final int tmpPollId;
 
     public RCRCardScreen(Component component,List<RCRCard> cards,int tmpPollId) {
         super(component);
         this.imageWidth = 328;
         this.imageHeight = 168;
-        this.leftPos = (this.width - this.imageWidth) / 2;
-        this.topPos = (this.height - this.imageHeight) / 2;
-        this.cards = cards;
+        this.cards = new ArrayList<>(cards);
         this.tmpPollId = tmpPollId;
-    }
-
-    public void setCards(List<RCRCard> cards){
-        this.cards = cards;
-        reset();
     }
 
     @Override
     public void init(){
         super.init();
+        this.leftPos = (this.width - this.imageWidth) / 2;
+        this.topPos = (this.height - this.imageHeight) / 2;
         int startX = leftPos;
         int startY = topPos;
         cardWidgets=new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        int min = Math.min(cards.size(), 3);
+        if(min<3){
+            startX+=(96+20)*(3-min)/2;
+        }
+        for (int i = 0; i < min; i++) {
             int finalA = i;
             cardWidgets.add(new RewardCardWidget(startX, startY,(widget)->{
                 selected = finalA;

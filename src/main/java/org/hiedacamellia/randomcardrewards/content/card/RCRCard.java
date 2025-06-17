@@ -65,6 +65,12 @@ public record RCRCard(ResourceLocation id,String nameKey,String descriptionKey,R
         object.add("content", content);
     }
 
+    @Override
+    public String toString() {
+        JsonObject json = new JsonObject();
+        RCRCard.toJson(this, json);
+        return "rcr:" + json;
+    }
 
     public static RCRCard of(Object o) {
         String string = String.valueOf(o);

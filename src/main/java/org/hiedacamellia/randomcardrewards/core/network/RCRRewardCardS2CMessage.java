@@ -1,9 +1,9 @@
 package org.hiedacamellia.randomcardrewards.core.network;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -12,9 +12,9 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import org.hiedacamellia.randomcardrewards.client.gui.screen.RCRCardScreen;
-import org.hiedacamellia.randomcardrewards.content.card.CardManager;
 import org.hiedacamellia.randomcardrewards.content.card.RCRCard;
 import org.hiedacamellia.randomcardrewards.registries.RCRNetWork;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +23,14 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RCRRewardCardS2CMessage {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     private final int tmpPollId;
     private final List<RCRCard> cardPool;
 
     public RCRRewardCardS2CMessage(int tmpPollId, List<RCRCard> cardPool) {
         this.tmpPollId = tmpPollId;
-        this.cardPool = cardPool;
+        this.cardPool = new ArrayList<>(cardPool);
     }
 
     public static RCRRewardCardS2CMessage decode(FriendlyByteBuf buffer) {
@@ -36,8 +38,7 @@ public class RCRRewardCardS2CMessage {
         int size = buffer.readVarInt();
         List<RCRCard> cardPool = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            ResourceLocation location = buffer.readResourceLocation();
-            RCRCard card = CardManager.getCard(location);
+            RCRCard card = RCRCard.decode(buffer);
             cardPool.add(card);
         }
         return new RCRRewardCardS2CMessage(tmpPollId, cardPool);
@@ -47,7 +48,7 @@ public class RCRRewardCardS2CMessage {
         buffer.writeInt(message.tmpPollId);
         buffer.writeVarInt(message.cardPool.size());
         for (RCRCard card : message.cardPool) {
-            buffer.writeResourceLocation(card.id());
+            RCRCard.encode(card, buffer);
         }
     }
 

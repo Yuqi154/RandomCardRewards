@@ -5,6 +5,7 @@ import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import org.hiedacamellia.randomcardrewards.api.RandomCardRewardsAPI;
+import org.hiedacamellia.randomcardrewards.content.card.CardContent;
 import org.hiedacamellia.randomcardrewards.content.card.CardPool;
 import org.hiedacamellia.randomcardrewards.content.card.RCRCard;
 
@@ -20,6 +21,7 @@ public class RandomCardRewardsPlugin extends KubeJSPlugin {
         event.add("RCRCardAPI", RandomCardRewardsAPI.class);
         event.add("RCRCard", RCRCard.class);
         event.add("RCRCardPool", CardPool.class);
+        event.add("CardContent", CardContent.class);
     }
 
     @Override
